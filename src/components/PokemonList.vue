@@ -2,7 +2,7 @@
   <div>
     <h3>Pokemon List</h3>
 
-    <!-- The @click is emiting the pokemon url to the parent component -->
+    <!-- The @click is emiting the current pokemon url with id to the parent component -->
     <article
       v-for="(pokemon, index) in pokemons"
       :key="'poke' + index"
@@ -15,11 +15,14 @@
         alt=""
       />
       <h5>{{ pokemon.name }}</h5>
+      <Url :pokurl="pokemon.url" />
     </article>
   </div>
 </template>
 
 <script>
+import Url from "./Url";
+
 export default {
   data: () => {
     return {
@@ -31,6 +34,9 @@ export default {
     "imageUrl",
     "apiUrl",
   ],
+  components: {
+    Url,
+  },
   methods: {
     fetchPokemon() {
       // fetch(this.apiUrl)
