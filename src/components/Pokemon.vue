@@ -1,25 +1,47 @@
 <template>
-  <div>
-    <h1>PokeMODE</h1>
-    <!-- pass in data to be used as props in PokemonList  -->
-    <PokemonList :imageUrl="imageUrl" :apiUrl="apiUrl" />
+  <div class="container">
+    <h1>Pokemon's</h1>
+    <PokemonList
+      v-if="!showDetail"
+      :imageUrl="imageUrl"
+      :apiUrl="apiUrl"
+      @setPokemonUrl="setPokemonUrl"
+    />
+    <PokemonDetail
+      v-if="showDetail"
+      :pokemonUrl="pokemonUrl"
+      :imageUrl="imageUrl"
+      @closeDetail="closeDetail"
+    />
   </div>
 </template>
 
 <script>
-import PokemonList from "./PokemonList";
-
+import PokemonList from "./PokemonList.vue";
+import PokemonDetail from "./PokemonDetail.vue";
 export default {
   data: () => {
     return {
-      //store urls for use in other components
-      imageUrl: "https://pokeres.bastionbot.org/images/pokemon/",
-      apiUrl: "https://pokeapi.co/api/v2/pokemon", //url to fetch data for pokemon
+      imageUrl:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
+      apiUrl: "https://pokeapi.co/api/v2/pokemon/",
+      pokemonUrl: "",
+      showDetail: false,
     };
   },
   components: {
-    // add any imported components here
     PokemonList,
+    PokemonDetail,
+  },
+  methods: {
+    setPokemonUrl(url) {
+      this.pokemonUrl = url;
+      this.showDetail = true;
+    },
+    closeDetail() {
+      this.pokemonUrl = "";
+      this.showDetail = false;
+    },
   },
 };
 </script>

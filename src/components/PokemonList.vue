@@ -2,7 +2,12 @@
   <div>
     <h3>Pokemon List</h3>
 
-    <article v-for="(pokemon, index) in pokemons" :key="'poke' + index">
+    <!-- The @click is emiting the pokemon url to the parent component -->
+    <article
+      v-for="(pokemon, index) in pokemons"
+      :key="'poke' + index"
+      @click="setPokemonUrl(pokemon.url)"
+    >
       <img
         :src="imageUrl + pokemon.id + '.png'"
         width="96"
@@ -55,6 +60,9 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    setPokemonUrl(url) {
+      this.$emit("setPokemonUrl", url);
     },
   },
   created() {
