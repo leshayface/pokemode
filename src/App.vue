@@ -1,12 +1,13 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
+  <div id="app" class="bg-gray-200" style="margin:0;">
+    <!-- style="background: #FFC519; margin:0;" -->
     <Pokemon />
   </div>
 </template>
 
 <script>
 import Pokemon from "./components/Pokemon";
+import "./assets/css/tailwind.css";
 
 export default {
   name: "App",

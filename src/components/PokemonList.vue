@@ -1,22 +1,25 @@
 <template>
   <div>
-    <h3>Pokemon List</h3>
-
     <!-- The @click is emiting the current pokemon url with id to the parent component -->
-    <article
-      v-for="(pokemon, index) in pokemons"
-      :key="'poke' + index"
-      @click="setPokemonUrl(pokemon.url)"
+    <div
+      class="grid grid-cols-1 gap-5 sm:gap-10 sm:grid-cols-2 lg:grid-cols-4 mt-20"
     >
-      <img
-        :src="imageUrl + pokemon.id + '.png'"
-        width="96"
-        height="96"
-        alt=""
-      />
-      <h5>{{ pokemon.name }}</h5>
-      <Url :pokurl="pokemon.url" />
-    </article>
+      <article
+        class="flex flex-col items-center bg-white rounded-lg shadow p-6"
+        v-for="(pokemon, index) in pokemons"
+        :key="'poke' + index"
+        @click="setPokemonUrl(pokemon.url)"
+      >
+        <img
+          :src="imageUrl + pokemon.id + '.png'"
+          width="96"
+          height="96"
+          alt=""
+        />
+        <h5>{{ pokemon.name }}</h5>
+        <Url :pokurl="pokemon.url" />
+      </article>
+    </div>
   </div>
 </template>
 

@@ -1,21 +1,20 @@
 <template>
-  <div>
-    <h1>PokeMODE</h1>
+  <div class="flex flex-col items-center p-10">
+    <img class="w-1/4 h-auto" alt="Vue logo" src="@/assets/logo.png" />
     <!-- pass in data to be used as props in PokemonList  -->
     <!-- passing setPokemonUrl with current pokemon url argument up from child to parent to use here as method -->
     <PokemonList
-      v-if="!showDetail"
       :imageUrl="imageUrl"
       :apiUrl="apiUrl"
       @setPokemonUrl="setPokemonUrl"
     />
 
-    <!-- passing closeDetail up from child to parent to use here as method -->
+    <!-- passing closeModal up from child to parent to use here as method -->
     <PokemonDetail
-      v-if="showDetail"
+      v-if="showModal"
       :pokemonUrl="pokemonUrl"
       :imageUrl="imageUrl"
-      @closeDetail="closeDetail"
+      @closeModal="closeModal"
     />
   </div>
 </template>
@@ -32,7 +31,7 @@ export default {
       apiUrl: "https://pokeapi.co/api/v2/pokemon", //url to fetch data for pokemon
       //default states for data to be passed to details page:
       pokemonUrl: "",
-      showDetail: false,
+      showModal: false,
     };
   },
   methods: {
@@ -40,11 +39,11 @@ export default {
     setPokemonUrl(url) {
       //this function sets our defailt data values
       this.pokemonUrl = url;
-      this.showDetail = true;
+      this.showModal = true;
     },
-    closeDetail() {
+    closeModal() {
       this.pokemonUrl = "";
-      this.showDetail = false;
+      this.showModal = false;
     },
   },
   components: {
