@@ -1,35 +1,42 @@
 <template>
   <div>
-    <!-- The @click is emiting the current pokemon url with id to the parent component -->
-    <div
-      class="grid grid-cols-1 gap-5 sm:gap-10 sm:grid-cols-2 lg:grid-cols-4 mt-20"
-    >
-      <article
-        class="flex flex-col items-center bg-white rounded-lg shadow p-6"
-        v-for="(pokemon, index) in pokemons"
-        :key="'poke' + index"
-        @click="setPokemonUrl(pokemon.url)"
+    <div v-if="loading">
+      <Spinner />
+    </div>
+    <div v-else>
+      <!-- The @click is emiting the current pokemon url with id to the parent component -->
+      <div
+        class="grid grid-cols-1 gap-5 sm:gap-10 sm:grid-cols-2 lg:grid-cols-4 mt-20"
       >
-        <img
-          :src="imageUrl + pokemon.id + '.png'"
-          width="96"
-          height="96"
-          alt=""
-        />
-        <h5>{{ pokemon.name }}</h5>
-        <Url :pokurl="pokemon.url" />
-      </article>
+        <article
+          class="flex flex-col items-center bg-white rounded-lg shadow p-6 cursor-pointer"
+          v-for="(pokemon, index) in pokemons"
+          :key="'poke' + index"
+          @click="setPokemonUrl(pokemon.url)"
+        >
+          <img
+            :src="imageUrl + pokemon.id + '.png'"
+            width="96"
+            height="96"
+            alt=""
+          />
+          <h5>{{ pokemon.name }}</h5>
+          <Url :pokurl="pokemon.url" />
+        </article>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Url from "./Url";
+import Spinner from "./spinner";
 
 export default {
   data: () => {
     return {
       pokemons: [],
+      loading: false,
     };
   },
   props: [
@@ -39,6 +46,7 @@ export default {
   ],
   components: {
     Url,
+    Spinner,
   },
   methods: {
     fetchPokemon() {
@@ -48,6 +56,7 @@ export default {
 
       // access props with this.
       let req = new Request(this.apiUrl);
+      this.loading = true;
       fetch(req)
         .then((resp) => {
           if (resp.status == 200) return resp.json();
@@ -68,7 +77,8 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
     setPokemonUrl(url) {
       this.$emit("setPokemonUrl", url);

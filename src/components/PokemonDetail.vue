@@ -21,8 +21,13 @@
               class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
             >
               <div v-if="pokemon">
-                <img :src="imageUrl + pokemon.id + '.png'" alt="" />
-                <h2>{{ pokemon.name }}</h2>
+                <div class="flex flex-col items-center p-10" v-if="loading">
+                  <Spinner />
+                </div>
+                <div v-else>
+                  <img :src="imageUrl + pokemon.id + '.png'" alt="" />
+                  <h2>{{ pokemon.name }}</h2>
+                </div>
               </div>
               <h2 v-else>The pokemon was not found</h2>
               <button
@@ -40,17 +45,24 @@
 </template>
 
 <script>
+import Spinner from "./spinner";
+
 export default {
   props: ["pokemonUrl", "imageUrl"],
+  components: {
+    Spinner,
+  },
   data: () => {
     return {
       pokemon: {},
+      loading: false,
     };
   },
   //now we can fetch data from the url we passed down
   methods: {
     fetchData() {
       let req = new Request(this.pokemonUrl);
+      this.loading = true;
       fetch(req)
         .then((resp) => {
           if (resp.status === 200) return resp.json();
@@ -60,7 +72,8 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-        });
+        })
+        .finally(() => (this.loading = false));
     },
     closeModal() {
       this.$emit("closeModal");
