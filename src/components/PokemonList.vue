@@ -4,6 +4,14 @@
       <Spinner />
     </div>
     <div v-else>
+      <div class="flex flex-col items-center space-y-4">
+        <span class="hidden">{{ (Poki = randomPokemon()) }}</span>
+        <h2 class="text-2xl">Your lucky Pokemon of the second is:</h2>
+        <img :src="imageUrl + Poki.id + '.png'" width="96" height="96" alt="" />
+        <h4 class="text-xl font-bold">
+          {{ Poki.name.toUpperCase() }}
+        </h4>
+      </div>
       <!-- The @click is emiting the current pokemon url with id to the parent component -->
       <div
         class="grid grid-cols-1 gap-5 sm:gap-10 sm:grid-cols-2 lg:grid-cols-4 mt-20"
@@ -30,7 +38,7 @@
 
 <script>
 import Url from "./Url";
-import Spinner from "./spinner";
+import Spinner from "./spinner.vue";
 
 export default {
   data: () => {
@@ -82,6 +90,9 @@ export default {
     },
     setPokemonUrl(url) {
       this.$emit("setPokemonUrl", url);
+    },
+    randomPokemon() {
+      return this.pokemons[Math.floor(Math.random() * this.pokemons.length)];
     },
   },
   created() {
